@@ -13,5 +13,17 @@ class Game {
 
         this.gameScreen.style.width = "1200px";
         this.gameScreen.style.height = "800px";
+
+        this.gameLoop()
+    }
+
+    gameLoop () {
+        this.update()
+
+        requestAnimationFrame(()=> this.gameLoop())
+    }
+
+    update() {
+        console.log("running")
     }
 }
