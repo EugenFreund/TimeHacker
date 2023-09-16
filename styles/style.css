@@ -46,17 +46,13 @@ body {
   }
 } */
 
-#game-end {
+/* /* #game-end {
   display: none;
-}
+} */
 
 .game-intro p {
   font-size: 18px;
   font-family: "Verdana";
-}
-
-.logo-img {
-  width: 350px;
 }
 
 .arrows-img {
@@ -82,16 +78,16 @@ body button {
   left: 0;
   margin: auto;
   display: block;
-  z-index: 2;
+  /* z-index: 2; */
   width: 420px;
   height: 200px;
   line-height: 60px;
   font-size: 60px;
   color: white;
   text-transform: uppercase;
-  opacity: 1;
+  /* opacity: 1; */
   visibility: visible;
-  transition: opacity 0s linear 1s, visibility 0s linear 1s;
+  /* transition: opacity 0s linear 1s, visibility 0s linear 1s; */
 }
 
 .confirm input, .confirm label {
@@ -115,7 +111,6 @@ body button {
   width: 1px;
   height: 1px;
   margin: -1px;
-  clip: rect(0, 0, 0, 0);
 }
 .confirm input:checked + label:before {
   content: '';

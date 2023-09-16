@@ -4,6 +4,10 @@ class Game {
         this.startScreen = document.getElementById('game-intro');
         this.gameScreen = document.getElementById('game-screen');
         this.gameEndScreen = document.getElementById('game-end');
+        this.width = 1200;
+        this.height = 800;
+        this.player = new Player(this.gameScreen,0,550,200)
+        // this.player = new Player(this.gameScreen,230,250,200)
     }
 
     start() {
@@ -11,10 +15,12 @@ class Game {
         this.gameEndScreen.style.display = 'none';
         this.gameScreen.style.display = 'block';
 
-        this.gameScreen.style.width = "1200px";
-        this.gameScreen.style.height = "800px";
+        this.gameScreen.style.width =  `${this.width}px`
+        this.gameScreen.style.height = `${this.height}px`
 
         this.gameLoop()
+
+        
     }
 
     gameLoop () {
