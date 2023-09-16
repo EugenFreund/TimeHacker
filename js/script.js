@@ -1,16 +1,35 @@
 window.addEventListener('load', () => {
-  const startButton = document.getElementById("start-button");
+  const startRadioButton = document.querySelector(".confirm");
   const restartButton = document.getElementById("restart-button");
 
-  function startGame() {
-    console.log('start game')
-    // game = new Game()
-    // game.start()
+  let game;
+  game = new Game();
+
+  function startGame(e) {
+
+    console.log(e)
+    e.preventDefault();
+
+    var target = e.target,
+      input = target.parentNode.previousElementSibling;
+
+    input.checked = true;
+
+    setTimeout(function () {
+      if (input.value === 'yes') {
+        console.log('start game')
+        game.start();
+      } else {
+        abort();
+      }
+    }, 2500);
+
+
+
+
   }
 
-  startButton.addEventListener("click", function () {
-    startGame();
-  });
+  startRadioButton.addEventListener("click", startGame);
 
 })
 
