@@ -6,7 +6,7 @@ class Game {
         this.gameEndScreen = document.getElementById('game-end');
         this.width = 1200;
         this.height = 800;
-        this.player = new Player(this.gameScreen,0,550,200)
+        this.player = new Player(this.gameScreen,0,550,220)
         // this.player = new Player(this.gameScreen,230,250,200)
     }
 
@@ -30,6 +30,6 @@ class Game {
     }
 
     update() {
-        console.log("running")
+        console.log("running");
     }
 }

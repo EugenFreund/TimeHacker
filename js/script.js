@@ -31,5 +31,20 @@ window.addEventListener('load', () => {
 
   startRadioButton.addEventListener("click", startGame);
 
+  document.addEventListener('keydown', (event) => {
+    if(event.key === "ArrowUp") {
+      game.player.moveUp();
+    } else if (event.key === "ArrowDown") {
+      game.player.moveDown();
+    } 
+
+  })
+
+  document.addEventListener('keyup', (event) => {
+    if(event.key === "ArrowUp" || event.key === "ArrowDown") {
+      game.player.stopMove();
+    }
+  })
+
 })
 
