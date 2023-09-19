@@ -1,5 +1,5 @@
 window.addEventListener('load', () => {
-  const startRadioButton = document.querySelector(".confirm");
+  const startRadioButton = document.querySelector(".inner");
   const restartButton = document.getElementById("restart-button");
 
   let game;
@@ -7,34 +7,37 @@ window.addEventListener('load', () => {
 
   function startGame(e) {
 
-    var target = e.target,
-      input = target.parentNode.previousElementSibling;
+    let target = e.target
+    let input = target.parentNode.previousElementSibling;
 
-    // input.checked = true;
+    input.checked = true;
 
     setTimeout(function () {
       if (input.value === 'yes') {
-        console.log('start game')
         game.start();
       } else {
         abort();
       }
-    }, 200);
+    }, 2000);
   }
 
-  startRadioButton.addEventListener("click", startGame);
+  startRadioButton.addEventListener("click", (event) => {
+    if (event.target.parentNode.localName === "label") {
+      startGame(event)
+    }
+  });
 
   document.addEventListener('keydown', (event) => {
     if(event.key === "ArrowUp") {
       game.player.moveUp();
     } else if (event.key === "ArrowDown") {
       game.player.moveDown();
-    } 
+    }
 
   })
 
   document.addEventListener('keyup', (event) => {
-    if(event.key === "ArrowUp" || event.key === "ArrowDown") {
+    if (event.key === "ArrowUp" || event.key === "ArrowDown") {
       game.player.stopMove();
     }
   })
