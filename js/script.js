@@ -7,13 +7,10 @@ window.addEventListener('load', () => {
 
   function startGame(e) {
 
-    console.log(e)
-    e.preventDefault();
-
     var target = e.target,
       input = target.parentNode.previousElementSibling;
 
-    input.checked = true;
+    // input.checked = true;
 
     setTimeout(function () {
       if (input.value === 'yes') {
@@ -22,11 +19,7 @@ window.addEventListener('load', () => {
       } else {
         abort();
       }
-    }, 2500);
-
-
-
-
+    }, 200);
   }
 
   startRadioButton.addEventListener("click", startGame);

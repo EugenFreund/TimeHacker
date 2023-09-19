@@ -7,7 +7,7 @@ class Player {
     this.width = height * 2 / 3
     this.element = document.createElement('img')
 
-    this.element.src = "../images/Player_KungFury.png"
+    this.element.src = "images/Player_KungFury.png"
 
     this.element.style.position = 'absolute'
     this.element.style.left = `${this.left}px`
@@ -19,12 +19,12 @@ class Player {
   }
 
   moveUp() {
-    if (this.left < 230) {
+    if (this.left < 250) {
       this.top -= 10;
       this.element.style.top = `${this.top}px`;
       this.left += 8;
       this.element.style.left = `${this.left}px`;
-      this.element.src = "../images/Player_KungFury_moveUp.png";
+      this.element.src = "images/Player_KungFury_moveUp.png";
     }
   }
 
@@ -34,13 +34,11 @@ class Player {
       this.element.style.top = `${this.top}px`;
       this.left -= 8;
       this.element.style.left = `${this.left}px`;
-      this.element.src = "../images/Player_KungFury_moveDown.png";
+      this.element.src = "images/Player_KungFury_moveDown.png";
     }
   }
 
   stopMove() {
-    setTimeout(() => {
-      this.element.src = "../images/Player_KungFury.png"
-    }, 100);
+    this.element.src = "images/Player_KungFury.png"
   }
 }

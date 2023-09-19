@@ -25,10 +25,10 @@ body {
 #game-screen {
   display: none;
   align-content: center;
-  /* overflow: hidden; */
+  overflow: hidden;
   position: relative;
   background-image: url(../images/TimeHakerBackground.gif);
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   /* animation: slide 3s linear infinite;  */
   /* animation: slide 5s linear infinite; */
