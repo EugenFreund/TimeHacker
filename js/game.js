@@ -44,12 +44,12 @@ class Game {
             if( this.player.didCollide(obstacle)) {
                 new Explosion(
                     this.gameScreen, 
-                    this.player.left + 
-                    this.player.width, 
-                    this.player.top - this.player.height /2);
+                    obstacle.left, 
+                    obstacle.top - obstacle.height /2);
                 obstacle.element.remove();
-                this.lives -= 1;
+                this.yearsHacked += 1;
             } else if( obstacle.left < 0 - obstacle.width){
+                this.yearsHacked -= 1;
                 obstacle.element.remove();
             } else {
                 nextObstacles.push(obstacle)
