@@ -9,6 +9,7 @@ class Game {
         this.player = new Player(this.gameScreen,20, 620,180);
         this.obstacle = [];
         this.animatedId = 0;
+        this.lives = 3
     }
 
     start() {
@@ -26,26 +27,36 @@ class Game {
     gameLoop () {
         this.update()
 
-        if( this.animatedId % 50 === 0) {
+        if( this.animatedId % 100 === 0) {
             this.obstacle.push(new Obstacle(
                 this.gameScreen, 
                 this.gameScreen.clientWidth + 240, // 240px out of the screen bc the 
                 Math.random() * (this.gameScreen.clientHeight -150) + 200 , 
                 150))
-            console.log(this.obstacle)
         }
         this.animatedId = requestAnimationFrame(()=> this.gameLoop())
     }
 
     update() {
+        const nextObstacles = [];
         this.obstacle.forEach( obstacle => {
-            if( obstacle.left < 0 - obstacle.width){
-                this.obstacle.shift();
-            }
             obstacle.moveLeft();
+            if( this.player.didCollide(obstacle)) {
+                new Explosion(
+                    this.gameScreen, 
+                    this.player.left + 
+                    this.player.width, 
+                    this.player.top - this.player.height /2);
+                obstacle.element.remove();
+                this.lives -= 1;
+            } else if( obstacle.left < 0 - obstacle.width){
+                obstacle.element.remove();
+            } else {
+                nextObstacles.push(obstacle)
+            }
             
         });
-        console.log("running");
+        this.obstacle = nextObstacles;
     }
 
     yearsHacked(year) {
