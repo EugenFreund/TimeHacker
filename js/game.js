@@ -10,7 +10,7 @@ class Game {
         this.obstacle = [];
         this.animatedId = 0;
         this.heightSrore = [];
-        this.years = 3;
+        this.years = 0;
     }
 
     start() {
@@ -54,7 +54,7 @@ class Game {
                 new Explosion(
                     this.gameScreen, 
                     obstacle.left, 
-                    obstacle.top - obstacle.height /2);
+                    obstacle.top - obstacle.height / 2);
                 obstacle.element.remove();
                 
                 if(this.years > 100){
@@ -63,7 +63,8 @@ class Game {
                     this.years = 0;
                 }
                 this.player.lives -= 1;
-
+                let liveBarStatus = String(this.player.lives * 33)
+                document.documentElement.style.setProperty('--liveBar', `${liveBarStatus}%`)
             } else if( obstacle.left < 0 - obstacle.width){
                 this.years += 100;
                 obstacle.element.remove();
@@ -86,8 +87,10 @@ class Game {
         this.gameEndScreen.style.display = 'block';
         this.gameScreen.style.display = 'none';
 
+        document.documentElement.style.setProperty('--liveBar', '100%')
+
         this.obstacle.forEach( obstacle => obstacle.element.remove())
-        this.storeData('Eugen', 10);
+        this.storeData('Eugen', this.years);
         this.outputScore();
         
     }
