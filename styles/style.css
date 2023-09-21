@@ -33,33 +33,71 @@ body {
   background-repeat: no-repeat;
 }
 
-/* /* #game-end {
+#game-end {
   display: none;
-} */
+  height: 100vh;
+  background-image: url(../images/GameOverSreen.gif);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#game-end h1,
+#game-end h2 {
+  font-size: 100px;
+  color: white;
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-top: 50px;
+}
+
+#game-end h2 {
+  padding-top: 0;
+}
+
+#game-end ul {
+  list-style-type: none;
+  padding: 0;
+  font-size: 60px;
+  color: white;
+  margin: 30px auto;
+}
+
+#game-end li {
+  padding: 5px;
+}
 
 .game-intro p {
   font-size: 18px;
   font-family: "Verdana";
 }
 
-.arrows-img {
-  width: 150px;
+.arcade-button {
+  background-color: #ff00ff;
+  /* Neon pink background */
+  border: none;
+  color: white;
+  font-family: "Press Start 2P", sans-serif;
+  /* Pixelated font */
+  font-size: 24px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  text-transform: uppercase;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
-body button {
-  font-size: 30px;
-  background-color: #870007;
-  color: #fff;
-  padding: 20px 40px;
-  border: 0;
-  box-shadow: 0;
-  border-radius: 5px;
-  margin-bottom: 20px;
+/* Hover effect */
+.arcade-button:hover {
+  box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff, 0 0 60px #ff00ff;
+  /* Glowing effect */
+
 }
 
 .confirm {
   position: absolute;
-  top: 0; 
+  top: 0;
   right: 0;
   bottom: 0;
   left: 0;
@@ -77,9 +115,11 @@ body button {
   /* transition: opacity 0s linear 1s, visibility 0s linear 1s; */
 }
 
-.confirm input, .confirm label {
+.confirm input,
+.confirm label {
   cursor: pointer;
 }
+
 .confirm label {
   position: relative;
   display: block;
@@ -88,21 +128,25 @@ body button {
   margin: 10px 0 0 0;
   text-align: center;
 }
+
 .confirm label:hover:before {
   content: '>';
   position: absolute;
   left: 35px;
 }
+
 .confirm input {
   position: absolute;
   width: 1px;
   height: 1px;
   margin: -1px;
 }
-.confirm input:checked + label:before {
+
+.confirm input:checked+label:before {
   content: '';
 }
-.confirm input:checked + label span {
+
+.confirm input:checked+label span {
   padding: 0 5px;
   animation: blink 0.25s alternate infinite;
 }
@@ -122,19 +166,21 @@ body button {
   font-size: 40px;
   color: white;
   text-transform: uppercase;
-  /* opacity: 0; */
+  opacity: 1;
   visibility: visible;
-  /* transition: opacity 0s linear 4s, visibility 0s linear 4s; */
+  /* transition: opacity 2s linear 0s; */
 }
-.hacking-time .inner {
-  /* opacity: 1; */
-  visibility: visibile;
-}
+
+/* .hacking-time.inner {
+  opacity: 1;
+} */
+
 .hacking-time h1 {
   font-weight: 300;
   line-height: 0px;
   font-size: 63px;
 }
+
 .hacking-time .progress {
   position: relative;
   height: 40px;
@@ -142,6 +188,7 @@ body button {
   margin: 0 0 15px 0;
   border: 3px solid white;
 }
+
 .hacking-time .progress:before {
   content: '';
   position: absolute;
@@ -154,11 +201,15 @@ body button {
 }
 
 @keyframes blink {
-  0%, 49% {
+
+  0%,
+  49% {
     color: white;
     background: blue;
   }
-  50%, 100% {
+
+  50%,
+  100% {
     color: blue;
     background: white;
   }
