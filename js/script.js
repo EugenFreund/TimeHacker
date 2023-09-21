@@ -1,9 +1,14 @@
 window.addEventListener('load', () => {
   const startRadioButton = document.querySelector(".inner");
-  const restartButton = document.getElementById("restart-button");
+  const restartButton = document.querySelector(".arcade-button");
 
-  let game;
-  game = new Game();
+  let game =  new Game();
+
+  function restartGame (){
+    game.player.element.remove()
+    game = new Game();
+    game.start();
+  }
 
   function startGame(e) {
 
@@ -27,8 +32,12 @@ window.addEventListener('load', () => {
     }
   });
 
+  restartButton.addEventListener("click", (event) => {
+      restartGame();
+  });
+
   document.addEventListener('keydown', (event) => {
-    if(event.key === "ArrowUp") {
+    if (event.key === "ArrowUp") {
       game.player.moveUp();
     } else if (event.key === "ArrowDown") {
       game.player.moveDown();
@@ -41,6 +50,5 @@ window.addEventListener('load', () => {
       game.player.stopMove();
     }
   })
-
 })
 

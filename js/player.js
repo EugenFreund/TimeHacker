@@ -5,6 +5,7 @@ class Player {
     this.top = top
     this.height = height
     this.width = height * 2 / 3
+    this.lives = 3;
     this.element = document.createElement('img')
 
     this.element.src = "images/Player_KungFury.png"
