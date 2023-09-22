@@ -32,6 +32,63 @@ body {
   visibility: visible;
 }
 
+
+.confirm {
+  margin: auto;
+  width: 420px;
+  height: 200px;
+  line-height: 60px;
+  font-size: 60px;
+  color: white;
+  text-transform: uppercase;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 2s linear 0s, visibility 2s linear 0s
+}
+
+.confirm.active{
+  opacity: 1;
+  visibility: visible;
+}
+
+.confirm input,
+.confirm label {
+  cursor: pointer;
+}
+
+.confirm label {
+  position: relative;
+  display: block;
+  float: left;
+  width: 50%;
+  margin: 10px 0 0 0;
+  text-align: center;
+}
+
+.confirm label:hover:before {
+  content: '>';
+  position: absolute;
+  left: 35px;
+}
+
+/* this class is for hidding the two of a radio button */
+.confirm input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+}
+
+/* when on of the radio button is checked hide the > symbol */
+.confirm input:checked+label:before {
+  content: '';
+}
+
+.confirm input:checked+label span {
+  padding: 0 5px;
+  animation: blink 0.25s alternate infinite;
+}
+
 #game-container {
   display: flex;
   width: 100vw;
@@ -77,22 +134,15 @@ body {
   margin: 30px auto;
 }
 
+
 #game-end li {
   padding: 5px;
 }
 
-.game-intro p {
-  font-size: 18px;
-  font-family: "Verdana";
-}
-
 .arcade-button {
   background-color: #ff00ff;
-  /* Neon pink background */
   border: none;
   color: white;
-  font-family: "Press Start 2P", sans-serif;
-  /* Pixelated font */
   font-size: 24px;
   padding: 10px 20px;
   cursor: pointer;
@@ -108,66 +158,6 @@ body {
   box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff, 0 0 60px #ff00ff;
   /* Glowing effect */
 
-}
-
-.confirm {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  margin: auto;
-  display: block;
-  width: 420px;
-  height: 200px;
-  line-height: 60px;
-  font-size: 60px;
-  color: white;
-  text-transform: uppercase;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 2s linear 0s, visibility 2s linear 0s
-}
-
-.confirm.active{
-  opacity: 1;
-  visibility: visible;
-}
-
-.confirm input,
-.confirm label {
-  cursor: pointer;
-}
-
-.confirm label {
-  position: relative;
-  display: block;
-  float: left;
-  width: 50%;
-  margin: 10px 0 0 0;
-  text-align: center;
-}
-
-.confirm label:hover:before {
-  content: '>';
-  position: absolute;
-  left: 35px;
-}
-
-.confirm input {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-}
-
-.confirm input:checked+label:before {
-  content: '';
-}
-
-.confirm input:checked+label span {
-  padding: 0 5px;
-  animation: blink 0.25s alternate infinite;
 }
 
 .hacking-time {

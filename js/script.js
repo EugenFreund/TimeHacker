@@ -8,6 +8,7 @@ window.addEventListener('load', () => {
     "Your task is to stop the danger posed by Hitler through a time travel adventure.",
     "Journey through time to thwart the dictator's dark plans and steer the fate of humanity.",
     "Time is your weapon, and history is your battlefield. Are you ready to save the future?",
+    "When I code I always put on a hip sound. If you're not cool enough for it you can press m to turn it off.",
     "Ah one more thing, what's your name? I need it for the funer.. emmmm parade after your successful mission."
   ];
 
@@ -16,9 +17,14 @@ window.addEventListener('load', () => {
 
   let dialog = new GameDialog(dialogSections, dialogElement, enterName);
   dialog.typeText();
+
+  var audio = new Audio('audio/Kung_Fury_sound.mp3');
+
   
   function enterName () {
+    audio.play();
     playerNameInput.classList.add('active');
+    document.getElementById("player-name-input").focus()
     playerNameInput.addEventListener('keydown', f = (event) => {
       if(event.key === "Enter"){
         game.player.name = event.currentTarget.value;
@@ -79,5 +85,16 @@ window.addEventListener('load', () => {
       game.player.stopMove();
     }
   })
+
+  document.addEventListener('keyup', (event) => {
+    if (event.key === "m") {
+      if(audio.paused === true){
+        audio.play();
+      }else {
+        audio.pause();
+      }
+    }
+  })
+
 })
 
