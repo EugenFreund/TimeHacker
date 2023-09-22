@@ -18,7 +18,7 @@ window.addEventListener('load', () => {
   let dialog = new GameDialog(dialogSections, dialogElement, enterName);
   dialog.typeText();
 
-  var audio = new Audio('audio/Kung_Fury_sound.mp3');
+  const audio = new Audio('audio/Kung_Fury_sound.mp3');
 
   
   function enterName () {
