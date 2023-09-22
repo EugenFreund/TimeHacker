@@ -90,7 +90,7 @@ class Game {
         document.documentElement.style.setProperty('--liveBar', '100%')
 
         this.obstacle.forEach( obstacle => obstacle.element.remove())
-        this.storeData('Eugen', this.years);
+        this.storeData(this.player.name, this.years);
         this.outputScore();
         
     }

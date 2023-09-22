@@ -17,6 +17,21 @@ body {
   background-repeat: no-repeat;
 }
 
+#player-name-input {
+  color: #fff;
+  text-align: center;
+  background-color: #000;
+  font-size: 40px;
+  padding: 20px 20px;
+  width: 300px;
+  margin-top: 300px;
+  visibility: hidden;
+}
+
+#player-name-input.active{
+  visibility: visible;
+}
+
 #game-container {
   display: flex;
   width: 100vw;
@@ -103,16 +118,20 @@ body {
   left: 0;
   margin: auto;
   display: block;
-  /* z-index: 2; */
   width: 420px;
   height: 200px;
   line-height: 60px;
   font-size: 60px;
   color: white;
   text-transform: uppercase;
-  /* opacity: 1; */
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 2s linear 0s, visibility 2s linear 0s
+}
+
+.confirm.active{
+  opacity: 1;
   visibility: visible;
-  /* transition: opacity 0s linear 1s, visibility 0s linear 1s; */
 }
 
 .confirm input,
@@ -198,6 +217,43 @@ body {
   width: var(--liveBar, 100%);
   background: white;
   transition: width 1s linear 0s;
+}
+
+.dialog-box {
+  background-color: #000;
+  border: 2px solid #2f2;
+  padding: 10px;
+  width: 400px;
+  font-size: 30px;
+  margin: 50px 0px 0px 50px;
+  color: #fff;
+  overflow: hidden;
+}
+
+.dialog-text::after {
+  content: '|';
+  animation: blink-caret 1s step-end infinite;
+}
+
+.continue-text {
+  text-align: center;
+  margin-top: 10px;
+  color: #fff;
+  font-size: 20px;
+  animation: blink-caret 1s step-end infinite;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes blink-caret {
+  from, to {
+      opacity: 0;
+  }
+  50% {
+      opacity: 1;
+  }
 }
 
 @keyframes blink {

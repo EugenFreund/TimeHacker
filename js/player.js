@@ -17,6 +17,8 @@ class Player {
     this.element.style.width = `${this.width}px`
 
     this.gameScreen.appendChild(this.element)
+    
+    this.name = "";
   }
 
   moveUp() {

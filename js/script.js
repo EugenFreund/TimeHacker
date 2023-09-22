@@ -1,10 +1,39 @@
 window.addEventListener('load', () => {
-  const startRadioButton = document.querySelector(".inner");
+  const startRadioButton = document.querySelector(".confirm");
   const restartButton = document.querySelector(".arcade-button");
+  const playerNameInput = document.querySelector('#player-name-input');
 
-  let game =  new Game();
+  const dialogSections = [
+    "Embark on a mission to change the course of history.",
+    "Your task is to stop the danger posed by Hitler through a time travel adventure.",
+    "Journey through time to thwart the dictator's dark plans and steer the fate of humanity.",
+    "Time is your weapon, and history is your battlefield. Are you ready to save the future?",
+    "Ah one more thing, what's your name? I need it for the funer.. emmmm parade after your successful mission."
+  ];
 
-  function restartGame (){
+  let game = new Game();
+  const dialogElement = document.getElementById("intro-dialog");
+
+  let dialog = new GameDialog(dialogSections, dialogElement, enterName);
+  dialog.typeText();
+  
+  function enterName () {
+    playerNameInput.classList.add('active');
+    playerNameInput.addEventListener('keydown', f = (event) => {
+      if(event.key === "Enter"){
+        game.player.name = event.currentTarget.value;
+        playerNameInput.removeEventListener('keydown', f)
+        playerNameInput.classList.remove('active');
+        confirmeGame();
+      }
+    })
+  }
+
+  function confirmeGame () {
+    startRadioButton.classList.add('active');
+  }
+
+  function restartGame() {
     game.player.element.remove()
     game = new Game();
     game.start();
@@ -33,7 +62,7 @@ window.addEventListener('load', () => {
   });
 
   restartButton.addEventListener("click", (event) => {
-      restartGame();
+    restartGame();
   });
 
   document.addEventListener('keydown', (event) => {

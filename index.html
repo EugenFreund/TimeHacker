@@ -15,24 +15,23 @@
   <main>
     <!-- #game-intro is initially shown on the game start screen -->
     <div id="game-intro">
-      <!-- <div class="dialog-box">
-        <p id="dialog-text"></p>
-    </div> -->
+      <div id="intro-dialog"></div>
+      <div>
+        <input type="text" id="player-name-input">
+      </div>
       <div class="confirm">
-        <div class="inner">
-          You're about to hack time, are you Sure?
-          <input type="radio" name="hack" id="warp" value="yes" /><label for="warp">
-            <span>Yes</span></label>
-          <input type="radio" name="hack" id="nope" value="no" /><label for="nope">
-            <span>No</span></label>
-        </div>
+        You're about to hack time, are you Sure?
+        <input type="radio" name="hack" id="warp" value="yes" /><label for="warp">
+          <span>Yes</span></label>
+        <input type="radio" name="hack" id="nope" value="no" /><label for="nope">
+          <span>No</span></label>
       </div>
     </div>
 
     <div id="game-container">
       <!-- #game-screen is initially hidden using CSS style display: none -->
       <div id="game-screen">
-          <!-- <div class="dialog-box">
+        <!-- <div class="dialog-box">
             <p id="dialog-text"></p>
           </div> -->
         <div class="hacking-time">
@@ -48,11 +47,12 @@
     <div id="game-end">
       <h1>Game Over</h1>
       <h2>Highscore</h1>
-      <div id="highscore"></div>
-      <button class="arcade-button">Restart</button>
+        <div id="highscore"></div>
+        <button class="arcade-button">Restart</button>
     </div>
   </main>
 
+  <script type="text/javascript" src="js/gameDialog.js"></script>
   <script type="text/javascript" src="js/explosion.js"></script>
   <script type="text/javascript" src="js/obstacle.js"></script>
   <script type="text/javascript" src="js/player.js"></script>
