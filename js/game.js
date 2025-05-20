@@ -1,100 +1,264 @@
-class Game {
-    // code to be added
+import { GameState } from './gameState.js';
+import Player from './player.js';
+import Obstacle from './obstacle.js';
+import Explosion from './explosion.js';
+import PowerUp from './powerup.js';
+import { GameConfig } from './config.js'; // Import GameConfig
+
+export default class Game {
     constructor() {
         this.startScreen = document.getElementById('game-intro');
         this.gameScreen = document.getElementById('game-screen');
         this.gameEndScreen = document.getElementById('game-end');
-        // this.width = 1200;
-        // this.height = 800;
-        this.player = new Player(this.gameScreen,20, 620,180);
-        this.obstacle = [];
-        this.animatedId = 0;
-        this.heightSrore = [];
-        this.years = 0;
-    }
-
-    start() {
-        this.startScreen.style.display = 'none';
-        this.gameEndScreen.style.display = 'none';
-        this.gameScreen.style.display = 'block';
         
-        this.gameScreen.style.width =  "1200px"
-        this.gameScreen.style.height = "800px"
+        this.player = null; 
+        this.obstacle = [];
+        this.powerUps = []; 
+        // this.powerUpSpawnChance = GameConfig.POWERUP_SPAWN_CHANCE; // Removed, replaced by time-based spawning
+        this.years = 0;
+        this.lastTime = 0; 
+        this.animationFrameId = null; 
 
-        this.gameLoop()
+        // Timers and Intervals for game logic
+        this.obstacleSpawnTimer = 0;
+        this.obstacleSpawnInterval = GameConfig.OBSTACLE_SPAWN_INTERVAL;
+        this.scoreUpdateTimer = 0;
+        this.scoreUpdateInterval = GameConfig.SCORE_UPDATE_INTERVAL;
+        this.powerUpSpawnTimer = 0; // Added for time-based power-up spawning
+        
+        this.currentState = GameState.MENU;
+        this._manageScreenVisibility();
+
+        // Start the game loop. It will call itself recursively.
+        this.animationFrameId = requestAnimationFrame((timestamp) => this.gameLoop(timestamp));
     }
 
-    gameLoop() {
-        if(this.player.lives < 1 ) {
-            this.gameOver();
-        } else {
-            this.update()
+    _manageScreenVisibility() {
+        this.startScreen.style.display = (this.currentState === GameState.MENU) ? 'block' : 'none';
+        this.gameScreen.style.display = (this.currentState === GameState.PLAYING) ? 'block' : 'none';
+        this.gameEndScreen.style.display = (this.currentState === GameState.GAME_OVER) ? 'block' : 'none';
+    }
 
-            if(this.animatedId % 10 === 0 ) {
-                this.yearsHacked()
+    _resetGameParameters() {
+        // Clear existing obstacles from the screen and array
+        this.obstacle.forEach(obs => { 
+            if (obs.element && obs.element.parentNode) {
+                obs.element.remove();
             }
-    
-            if (this.animatedId % 100 === 0) {
-                this.obstacle.push(new Obstacle(
-                    this.gameScreen,
-                    this.gameScreen.clientWidth + 240, // 240px out of the screen bc the 
-                    Math.random() * (this.gameScreen.clientHeight - 360) + 230,
-                    150))
+        });
+        this.obstacle = [];
+
+        // Remove old player element if it exists
+        if (this.player && this.player.element && this.player.element.parentNode) {
+            this.player.element.remove();
+        }
+        
+        // Initialize player. The Player constructor adds its element to gameScreen.
+        this.player = new Player(this.gameScreen, 20, 620, 180); 
+        
+        // Reset game parameters
+        this.years = 0;
+        // Player lives are initialized in the Player constructor using GameConfig.PLAYER_INITIAL_LIVES
+        document.getElementById('years').innerHTML = this.years; // Update UI
+        document.documentElement.style.setProperty('--liveBar', `${GameConfig.LIVE_BAR_FULL_PERCENTAGE}%`);
+
+        this.lastTime = 0; // Reset lastTime for deltaTime calculation
+        this.obstacleSpawnTimer = 0; // Reset timers
+        this.scoreUpdateTimer = 0;
+        this.powerUpSpawnTimer = 0; // Reset power-up spawn timer
+
+        // Clear existing power-ups
+        this.powerUps.forEach(p => p.remove());
+        this.powerUps = [];
+
+        // Reset player invincibility visual state if game is restarted mid-invincibility
+        if (this.player && this.player.isInvincible) {
+            this.player.isInvincible = false;
+            if (this.player.flashIntervalId) { // Corrected to flashIntervalId
+                 clearInterval(this.player.flashIntervalId);
+                 this.player.flashIntervalId = null; 
             }
-            this.animatedId = requestAnimationFrame(() => this.gameLoop())
+            if (this.player.element) { 
+                this.player.element.style.opacity = '1';
+            }
         }
     }
 
-    update() {
-        const nextObstacles = [];
+    start() {
+        this._resetGameParameters(); 
+        this.currentState = GameState.PLAYING;
+        this._manageScreenVisibility();
+        
+        this.gameScreen.style.width = `${GameConfig.GAME_WIDTH}px`; 
+        this.gameScreen.style.height = `${GameConfig.GAME_HEIGHT}px`;
+    }
 
-        this.obstacle.forEach( obstacle => {
-            obstacle.moveLeft();
-            if(this.player.didCollide(obstacle)) {
+    gameLoop(timestamp) { 
+        if (!this.lastTime && timestamp) { // Ensure timestamp is provided
+            this.lastTime = timestamp;
+        }
+        // If timestamp is not available (e.g. first call after reset), use a default deltaTime or skip update
+        const deltaTime = (timestamp && this.lastTime) ? timestamp - this.lastTime : (1000/60); // Default to 60 FPS if no timestamp
+        this.lastTime = timestamp || 0;
+
+
+        if (this.currentState === GameState.PLAYING) {
+            if (!this.player) {
+                console.error("Player not initialized in PLAYING state!");
+                this.gameOver();
+            } else {
+                // Core game logic for PLAYING state
+                this.processInput();
+                this.updateGameElements(deltaTime);
+                this.handleCollisions();
+                this.updateScoreAndLives(deltaTime); // Includes game over check
+                this.spawnElements(deltaTime);
+            }
+        }
+        // this.renderGame(); // Future placeholder
+
+        this.animationFrameId = requestAnimationFrame((ts) => this.gameLoop(ts));
+    }
+
+    processInput() {
+        // Future: Handle real-time game input like continuous movement
+        // For now, player input (moveUp, moveDown) is handled in script.js via event listeners
+    }
+
+    updateGameElements(deltaTime) {
+        if (!this.player) return;
+
+        this.player.updateInvincibility(deltaTime);
+
+        // Move obstacles
+        this.obstacle.forEach(obs => {
+            obs.moveLeft(); // Obstacle movement logic is simple, no deltaTime needed for now
+        });
+
+        // Update power-ups (movement, etc.)
+        this.updatePowerUps(deltaTime); // Pass deltaTime if powerups need it
+    }
+
+    handleCollisions() {
+        if (!this.player) return;
+
+        // Player-Obstacle collision
+        const nextObstacles = [];
+        this.obstacle.forEach(obs => {
+            if (this.player.didCollide(obs)) {
                 new Explosion(
-                    this.gameScreen, 
-                    obstacle.left, 
-                    obstacle.top - obstacle.height / 2);
-                obstacle.element.remove();
+                    this.gameScreen,
+                    obs.left,
+                    // Ensure obs.height is valid, Explosion might take default size from config if needed
+                    obs.top - (obs.height || GameConfig.OBSTACLE_DEFAULT_HEIGHT) / 2); 
+                if (obs.element && obs.element.parentNode) {
+                    obs.element.remove();
+                }
                 
-                if(this.years > 100){
-                    this.years -=100;
+                if (this.years > GameConfig.SCORE_PENALTY_OBSTACLE_COLLISION) {
+                    this.years -= GameConfig.SCORE_PENALTY_OBSTACLE_COLLISION;
                 } else {
                     this.years = 0;
                 }
-                this.player.lives -= 1;
-                let liveBarStatus = String(this.player.lives * 33)
-                document.documentElement.style.setProperty('--liveBar', `${liveBarStatus}%`)
-            } else if( obstacle.left < 0 - obstacle.width){
-                this.years += 100;
-                obstacle.element.remove();
+                this.player.lives -= 1; // Lives decrease by 1
+                // Player lives are 3, so 100/3 for percentage. GameConfig could store PLAYER_MAX_LIVES for this calc.
+                let liveBarStatus = String(Math.max(0, this.player.lives) * (100 / GameConfig.PLAYER_INITIAL_LIVES));
+                document.documentElement.style.setProperty('--liveBar', `${liveBarStatus}%`);
+            } else if (obs.left < 0 - (obs.width || GameConfig.OBSTACLE_DEFAULT_HEIGHT)) { // Obstacle off-screen
+                this.years += GameConfig.SCORE_REWARD_OBSTACLE_PASSED;
+                if (obs.element && obs.element.parentNode) {
+                    obs.element.remove();
+                }
             } else {
-                nextObstacles.push(obstacle)
+                nextObstacles.push(obs);
             }
-            
         });
-
         this.obstacle = nextObstacles;
+
+        // Player-PowerUp collision is handled within updatePowerUps for now
+    }
+    
+    updateScoreAndLives(deltaTime) {
+        if (!this.player) return;
+
+        // Time-based score increment (replaces yearsHacked frame-based logic)
+        this.scoreUpdateTimer += deltaTime;
+        if (this.scoreUpdateTimer >= this.scoreUpdateInterval) {
+            this.scoreUpdateTimer -= this.scoreUpdateInterval; 
+            this.years += GameConfig.SCORE_INCREMENT_PER_INTERVAL; 
+        }
+        document.getElementById('years').innerHTML = this.years; 
+
+        // Game over check
+        if (this.player.lives < 1) {
+            this.gameOver();
+        }
     }
 
-    yearsHacked() {
-        let years = document.getElementById('years')
-        years.innerHTML = this.years +=1;
+    spawnElements(deltaTime) {
+        // Time-based obstacle spawning
+        this.obstacleSpawnTimer += deltaTime;
+        if (this.obstacleSpawnTimer >= this.obstacleSpawnInterval) {
+            this.obstacleSpawnTimer -= this.obstacleSpawnInterval; 
+            this.obstacle.push(new Obstacle(
+                this.gameScreen,
+                this.gameScreen.clientWidth + GameConfig.GAME_OBSTACLE_OFFSCREEN_SPAWN_OFFSET, 
+                Math.random() * (this.gameScreen.clientHeight - GameConfig.GAME_OBSTACLE_RANDOM_Y_MAX_OFFSET) + GameConfig.GAME_OBSTACLE_RANDOM_Y_MIN_OFFSET, 
+                GameConfig.OBSTACLE_DEFAULT_HEIGHT)); // Assuming default height for now
+        }
+    }
+    
+    updatePowerUps(deltaTime) { 
+        // Time-based power-up spawning logic
+        this.powerUpSpawnTimer += deltaTime;
+        if (this.powerUpSpawnTimer >= GameConfig.POWERUP_SPAWN_INTERVAL) {
+            this.powerUpSpawnTimer = 0; // Reset timer (or subtract interval for accuracy: this.powerUpSpawnTimer -= GameConfig.POWERUP_SPAWN_INTERVAL)
+
+            this.powerUps.push(new PowerUp(
+                this.gameScreen,
+                // Start off-screen to the right, using GAME_POWERUP_OFFSCREEN_SPAWN_OFFSET for consistency
+                this.gameScreen.clientWidth + GameConfig.GAME_POWERUP_OFFSCREEN_SPAWN_OFFSET, 
+                // Random Y position, ensuring it's fully visible using configured offsets
+                Math.random() * (this.gameScreen.clientHeight - GameConfig.GAME_POWERUP_RANDOM_Y_MAX_OFFSET) + GameConfig.GAME_POWERUP_RANDOM_Y_MIN_OFFSET
+                // PowerUp constructor gets width, height, imgSrc from GameConfig
+            ));
+            // console.log("PowerUp spawned by timer"); // For debugging
+        }
+
+        // Move and check collisions for existing power-ups
+        const nextPowerUps = [];
+        this.powerUps.forEach(powerUp => {
+            powerUp.move(); 
+            if (this.player && this.player.didCollide(powerUp)) { // Ensure player exists before checking collision
+                powerUp.remove();
+                this.player.activateInvincibility(); 
+            } else if (powerUp.left < 0 - powerUp.width) { 
+                powerUp.remove();
+            } else {
+                nextPowerUps.push(powerUp);
+            }
+        });
+        this.powerUps = nextPowerUps;
     }
 
-    gameOver() {
-        this.startScreen.style.display = 'none';
-        this.gameEndScreen.style.display = 'block';
-        this.gameScreen.style.display = 'none';
+    // Old update() method is removed as its logic is now in updateGameElements and handleCollisions.
+    // Old yearsHacked() method is removed as its logic is now in updateScoreAndLives.
 
-        document.documentElement.style.setProperty('--liveBar', '100%')
+    gameOver() { // This method remains, called by updateScoreAndLives or gameLoop
+        this.currentState = GameState.GAME_OVER;
+        this._manageScreenVisibility();
 
-        this.obstacle.forEach( obstacle => obstacle.element.remove())
-        this.storeData(this.player.name, this.years);
-        this.outputScore();
-        
+        // Store score. Ensure player and player.name exist.
+        if (this.player && typeof this.player.name !== 'undefined') { 
+             this.storeData(this.player.name, this.years);
+        } else {
+            // Fallback name if player or player.name is not set
+            this.storeData("TimeWarrior", this.years); 
+        }
+        this.outputScore(); // Display high scores on the game over screen
     }
 
+    // outputScore and storeData methods remain largely the same.
     outputScore() {
         // Check if session storage has the data you want to display
         if (sessionStorage.getItem('userData')) {
