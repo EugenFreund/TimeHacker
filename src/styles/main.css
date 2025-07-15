@@ -1,0 +1,89 @@
+body {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  background-color: black;
+  font-family: 'VT323', system, sans-serif;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.app-container h1 {
+  font-size: 48px;
+  margin: 20px 0;
+  color: #00ff00;
+  text-shadow: 0 0 10px #00ff00;
+}
+
+.game-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.phaser-game {
+  border: 2px solid #00ff00;
+  box-shadow: 0 0 20px #00ff00;
+}
+
+.dialog-box {
+  background-color: #000;
+  border: 2px solid #2f2;
+  padding: 10px;
+  width: 400px;
+  font-size: 30px;
+  margin: 50px 0px 0px 50px;
+  color: #fff;
+  overflow: hidden;
+}
+
+.dialog-text::after {
+  content: '|';
+  animation: blink-caret 1s step-end infinite;
+}
+
+.continue-text {
+  text-align: center;
+  margin-top: 10px;
+  color: #fff;
+  font-size: 20px;
+  animation: blink-caret 1s step-end infinite;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .app-container h1 {
+    font-size: 36px;
+  }
+  
+  .phaser-game {
+    max-width: 100vw;
+    max-height: 100vh;
+  }
+}

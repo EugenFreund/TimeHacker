@@ -14,52 +14,7 @@
   </head>
 
   <body>
-    <main>
-      <!-- #game-intro is initially shown on the game start screen -->
-      <div id="game-intro">
-        <div id="intro-dialog"></div>
-        <div>
-          <input type="text" autocomplete="off" id="player-name-input" />
-        </div>
-        <div class="confirm">
-          You're about to hack time, are you Sure?
-          <input type="radio" name="hack" id="warp" value="yes" /><label
-            for="warp"
-          >
-            <span>Yes</span></label
-          >
-          <input type="radio" name="hack" id="nope" value="no" /><label
-            for="nope"
-          >
-            <span>No</span></label
-          >
-        </div>
-      </div>
-
-      <div id="game-container">
-        <!-- #game-screen is initially hidden using CSS style display: none -->
-        <div id="game-screen">
-          <!-- <div class="dialog-box">
-            <p id="dialog-text"></p>
-          </div> -->
-          <div class="hacking-time">
-            <h1>Hacking time...</h1>
-            <div class="progress"></div>
-            Years hacked:
-            <span id="years">0</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- #game-end is initially hidden using CSS style display: none -->
-      <div id="game-end">
-        <h1>Game Over</h1>
-        <h2>Highscore</h2>
-        <div id="highscore"></div>
-        <button class="arcade-button">Restart</button>
-      </div>
-    </main>
-
-    <script type="module" src="src/main.ts"></script>
+    <div id="root"></div>
+    <script type="module" src="src/main.tsx"></script>
   </body>
 </html>
