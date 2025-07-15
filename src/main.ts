@@ -1,3 +1,6 @@
+import { Game } from './game';
+import { GameDialog } from './gameDialog';
+
 window.addEventListener('load', () => {
   const startRadioButton = document.querySelector(".confirm");
   const restartButton = document.querySelector(".arcade-button");
@@ -95,6 +98,41 @@ window.addEventListener('load', () => {
       }
     }
   })
+
+  // Touch controls for mobile devices
+  let touchStartY = 0;
+  let touchEndY = 0;
+  let isMoving = false;
+
+  document.addEventListener('touchstart', (event) => {
+    touchStartY = event.touches[0].clientY;
+  });
+
+  document.addEventListener('touchmove', (event) => {
+    event.preventDefault(); // Prevent scrolling
+    touchEndY = event.touches[0].clientY;
+    const deltaY = touchStartY - touchEndY;
+    
+    if (Math.abs(deltaY) > 50 && !isMoving) { // Minimum swipe distance
+      isMoving = true;
+      if (deltaY > 0) {
+        // Swipe up
+        game.player.moveUp();
+      } else {
+        // Swipe down
+        game.player.moveDown();
+      }
+    }
+  });
+
+  document.addEventListener('touchend', (event) => {
+    if (isMoving) {
+      game.player.stopMove();
+      isMoving = false;
+    }
+    touchStartY = 0;
+    touchEndY = 0;
+  });
 
 })
 

@@ -1,4 +1,4 @@
-class Player {
+export class Player {
   constructor(gameScreen, left, top, height) {
     this.gameScreen = gameScreen
     this.left = left

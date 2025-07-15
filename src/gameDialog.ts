@@ -1,4 +1,4 @@
-class GameDialog {
+export class GameDialog {
   constructor(dialogSections, dialogElement, callback) {
     this.dialogElement = dialogElement;
     this.dialogSections = dialogSections;
