@@ -30,10 +30,9 @@ body {
   visibility: hidden;
 }
 
-#player-name-input.active{
+#player-name-input.active {
   visibility: visible;
 }
-
 
 .confirm {
   margin: auto;
@@ -45,10 +44,12 @@ body {
   text-transform: uppercase;
   opacity: 0;
   visibility: hidden;
-  transition: opacity 2s linear 0s, visibility 2s linear 0s
+  transition:
+    opacity 2s linear 0s,
+    visibility 2s linear 0s;
 }
 
-.confirm.active{
+.confirm.active {
   opacity: 1;
   visibility: visible;
 }
@@ -82,11 +83,11 @@ body {
 }
 
 /* when on of the radio button is checked hide the > symbol */
-.confirm input:checked+label:before {
+.confirm input:checked + label:before {
   content: '';
 }
 
-.confirm input:checked+label span {
+.confirm input:checked + label span {
   padding: 0 5px;
   animation: blink 0.25s alternate infinite;
 }
@@ -136,7 +137,6 @@ body {
   margin: 30px auto;
 }
 
-
 #game-end li {
   padding: 5px;
 }
@@ -157,9 +157,11 @@ body {
 
 /* Hover effect */
 .arcade-button:hover {
-  box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff, 0 0 60px #ff00ff;
+  box-shadow:
+    0 0 20px #ff00ff,
+    0 0 40px #ff00ff,
+    0 0 60px #ff00ff;
   /* Glowing effect */
-
 }
 
 .hacking-time {
@@ -240,16 +242,16 @@ body {
 }
 
 @keyframes blink-caret {
-  from, to {
-      opacity: 0;
+  from,
+  to {
+    opacity: 0;
   }
   50% {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
 @keyframes blink {
-
   0%,
   49% {
     color: white;
