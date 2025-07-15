@@ -27,8 +27,8 @@ window.addEventListener('load', () => {
     audio.play();
     playerNameInput.classList.add('active');
     document.getElementById('player-name-input').focus();
-    
-    const handleKeydown = (event) => {
+
+    const handleKeydown = event => {
       if (event.key === 'Enter') {
         game.player.name = event.currentTarget.value;
         playerNameInput.removeEventListener('keydown', handleKeydown);
@@ -36,7 +36,7 @@ window.addEventListener('load', () => {
         confirmeGame();
       }
     };
-    
+
     playerNameInput.addEventListener('keydown', handleKeydown);
   }
 
