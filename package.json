@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview",
-    "lint": "eslint ./js --ext .js,.ts",
-    "format": "prettier --write ./js **/*.{js,ts,css,html}"
+    "lint": "eslint ./src --ext .js,.ts",
+    "format": "prettier --write ./src **/*.{js,ts,css,html}"
   },
   "keywords": [],
   "author": "",
