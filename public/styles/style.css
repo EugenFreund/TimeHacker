@@ -4,6 +4,8 @@ body {
   text-align: center;
   background-color: black;
   font-family: 'VT323', system, sans-serif;
+  overflow: hidden; /* Prevent scrolling on mobile */
+  touch-action: none; /* Disable default touch actions */
 }
 
 #game-intro {
@@ -260,5 +262,81 @@ body {
   100% {
     color: blue;
     background: white;
+  }
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  #game-container {
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  #game-screen {
+    width: 100vw !important;
+    height: 100vh !important;
+  }
+  
+  #player-name-input {
+    width: 250px;
+    font-size: 30px;
+    margin-top: 200px;
+  }
+  
+  .confirm {
+    width: 300px;
+    font-size: 40px;
+    line-height: 50px;
+  }
+  
+  .hacking-time {
+    left: 20px;
+    right: 20px;
+    top: 20px;
+    max-width: none;
+    font-size: 30px;
+  }
+  
+  .hacking-time h1 {
+    font-size: 45px;
+  }
+  
+  #game-end h1,
+  #game-end h2 {
+    font-size: 60px;
+  }
+  
+  #game-end ul {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  #player-name-input {
+    width: 200px;
+    font-size: 25px;
+  }
+  
+  .confirm {
+    width: 250px;
+    font-size: 30px;
+    line-height: 40px;
+  }
+  
+  .hacking-time {
+    font-size: 25px;
+  }
+  
+  .hacking-time h1 {
+    font-size: 35px;
+  }
+  
+  #game-end h1,
+  #game-end h2 {
+    font-size: 40px;
+  }
+  
+  #game-end ul {
+    font-size: 30px;
   }
 }
