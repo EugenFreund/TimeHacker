@@ -27,17 +27,17 @@ window.addEventListener('load', () => {
     audio.play();
     playerNameInput.classList.add('active');
     document.getElementById('player-name-input').focus();
-    playerNameInput.addEventListener(
-      'keydown',
-      (f = event => {
-        if (event.key === 'Enter') {
-          game.player.name = event.currentTarget.value;
-          playerNameInput.removeEventListener('keydown', f);
-          playerNameInput.classList.remove('active');
-          confirmeGame();
-        }
-      })
-    );
+    
+    const handleKeydown = (event) => {
+      if (event.key === 'Enter') {
+        game.player.name = event.currentTarget.value;
+        playerNameInput.removeEventListener('keydown', handleKeydown);
+        playerNameInput.classList.remove('active');
+        confirmeGame();
+      }
+    };
+    
+    playerNameInput.addEventListener('keydown', handleKeydown);
   }
 
   function confirmeGame() {
